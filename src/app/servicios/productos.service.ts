@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class ProductosServicios {
 
-    apiURL = 'http://localhost:8080';
+    apiURL = 'https://negelec-gutynatura.herokuapp.com';
 
     constructor(private http: HttpClient) { }
 

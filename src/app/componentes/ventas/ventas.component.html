@@ -303,6 +303,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <div *ngIf="!paidFor">
+
+                        <h1>Buy this Couch - ${{ product.price }} OBO</h1>
+                      
+                        <p>{{ product.description }}</p>
+                      
+                        <img width="400" [src]="product.img">
+                      
+                      </div>
+                      
+                      <div *ngIf=paidFor>
+                        <h1>Yay, you bought a sweet couch!</h1>
+                      
+                        <img src="https://i.ytimg.com/vi/n_KrxgXrU4w/maxresdefault.jpg">
+                      </div>
+                      
+                      
+                      <div [hidden]="paidFor" #paypal></div>
+
                     <!--
                     
                     <div class="col-lg-4 col-md-6">

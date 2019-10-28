@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ProductosServicios } from 'src/app/servicios/productos.service';
 import { Producto } from 'src/app/entidades/producto.model';
+
+declare var paypal;
 
 @Component({
   selector: 'app-ventas',
@@ -17,11 +19,48 @@ import { Producto } from 'src/app/entidades/producto.model';
 })
 export class VentasComponent implements OnInit {
 
+  @ViewChild('paypal',{static:true}) paypalElement: ElementRef;
+
+  product= {
+    price: 888.88,
+    description: 'Chikchiquicha',
+    img: 'https://i.ytimg.com/vi/n_KrxgXrU4w/maxresdefault.jpg'
+  }
+
+  paidFor = false;
+
+
   constructor(private productoServicio: ProductosServicios) { }
-  
   listaProductos: Producto[] = [];
 
   ngOnInit() {
+
+    paypal
+    .Buttons({
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [
+            {
+              description: this.product.description,
+              amount: {
+                currency_code: 'USD',
+                value: this.product.price
+              }
+            }
+          ]
+        })
+      },
+      onApprove: async (data,actions)=>{
+        const order = await actions.order.capture();
+        this.paidFor = true;
+        console.log(order);
+      },
+      onError: err => {
+        console.log(err);
+      }
+    }).render(this.paypalElement.nativeElement);
+
+
     this.productoServicio.getProductos().subscribe(
       ( productos: Producto[] ) => {
          this.listaProductos = productos;
