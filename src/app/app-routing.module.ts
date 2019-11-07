@@ -4,7 +4,8 @@ import { VentasComponent } from './componentes/ventas/ventas.component';
 
 
 const routes: Routes = [
-  {path:'', component: VentasComponent}
+  {path:'', component: VentasComponent},
+  {path:'carritocompra', component: VentasComponent}
 ];
 
 @NgModule({

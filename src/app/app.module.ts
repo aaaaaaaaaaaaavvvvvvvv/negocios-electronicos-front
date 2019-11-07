@@ -8,13 +8,15 @@ import { HeaderComponent } from './componentes/header/header.component';
 import { FooterComponent } from './componentes/footer/footer.component';
 import { ProductosServicios } from './servicios/productos.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CarritocompraComponent } from './componentes/carritocompra/carritocompra.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VentasComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    CarritocompraComponent
   ],
   imports: [
     BrowserModule,
