@@ -9,6 +9,7 @@ import { FooterComponent } from './componentes/footer/footer.component';
 import { ProductosServicios } from './servicios/productos.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CarritocompraComponent } from './componentes/carritocompra/carritocompra.component';
+import { VariableGlobalServicio } from './servicios/variableGlobal.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CarritocompraComponent } from './componentes/carritocompra/carritocompr
     HttpClientModule
   ],
   providers: [
-    ProductosServicios
+    ProductosServicios,
+    VariableGlobalServicio
   ],
   bootstrap: [AppComponent]
 })

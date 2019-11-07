@@ -1,1 +1,16 @@
-<p>carritocompra works!</p>
+<div *ngIf="!paidFor">
+    COMPRA SALVAJE
+    <div *ngFor="let compra of purchaseunitList">
+        {{compra.description}}
+    </div>
+                       
+</div>
+
+<div *ngIf=paidFor>
+    <h1>Yay, you bought a sweet couch!</h1>
+
+
+</div>
+
+
+<div [hidden]="paidFor" #paypal></div>

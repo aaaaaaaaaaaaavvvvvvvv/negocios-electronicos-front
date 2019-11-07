@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ProductosServicios } from 'src/app/servicios/productos.service';
 import { Producto } from 'src/app/entidades/producto.model';
 import { PurchaseUnit } from 'src/app/entidades/purchaseUnits.model';
+import { VariableGlobalServicio } from 'src/app/servicios/variableGlobal.service';
 
 declare var paypal;
 
@@ -40,7 +41,8 @@ export class VentasComponent implements OnInit {
   paidFor = false;
 
 
-  constructor(private productoServicio: ProductosServicios) { }
+  constructor(private productoServicio: ProductosServicios,
+    private variableGlobalServicio: VariableGlobalServicio) { }
   listaProductos: Producto[] = [];
 
   ngOnInit() {
@@ -76,9 +78,9 @@ export class VentasComponent implements OnInit {
     this.purchaseunit.amount.currency_code = 'USD';
     this.purchaseunit.amount.value = producto.precioproducto;
     this.purchaseunitList.push(this.purchaseunit);
-    
+    this.variableGlobalServicio.purchaseunit = this.purchaseunitList;
     console.log('MOSTRAMOS EL PRODUCTO');
-    console.log(producto);
+    console.log(this.purchaseunitList);
   }
 
 
