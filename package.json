@@ -26,6 +26,7 @@
     "popper": "^1.0.1",
     "popper.js": "^1.16.0",
     "rxjs": "~6.4.0",
+    "sweetalert2": "^9.1.5",
     "tslib": "^1.10.0",
     "typings": "^2.1.1",
     "zone.js": "~0.9.1"

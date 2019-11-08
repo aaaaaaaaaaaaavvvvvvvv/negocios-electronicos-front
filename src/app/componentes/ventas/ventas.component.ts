@@ -3,6 +3,8 @@ import { ProductosServicios } from 'src/app/servicios/productos.service';
 import { Producto } from 'src/app/entidades/producto.model';
 import { PurchaseUnit } from 'src/app/entidades/purchaseUnits.model';
 import { VariableGlobalServicio } from 'src/app/servicios/variableGlobal.service';
+import Swal from 'sweetalert2';
+import { CarritoCompra } from 'src/app/entidades/carritocompra.model';
 
 declare var paypal;
 
@@ -21,14 +23,7 @@ declare var paypal;
 })
 export class VentasComponent implements OnInit {
 
-  @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
-
-  product = {
-    price: 888.88,
-    description: 'Chikchiquicha',
-    img: 'https://i.ytimg.com/vi/n_KrxgXrU4w/maxresdefault.jpg'
-  }
-
+  precioAPagar: number = 0;
   purchaseunitList?: PurchaseUnit[] = [];
   purchaseunit?: PurchaseUnit = {
     description: '',
@@ -37,8 +32,12 @@ export class VentasComponent implements OnInit {
       value: 0
     }
   };
+  carritoDetalleList: CarritoCompra[] = [];
+  carritoDetalleObj: CarritoCompra = {
+    producto: null,
+    cantidad: 0
+  };
 
-  paidFor = false;
 
 
   constructor(private productoServicio: ProductosServicios,
@@ -46,25 +45,6 @@ export class VentasComponent implements OnInit {
   listaProductos: Producto[] = [];
 
   ngOnInit() {
-
-    paypal
-      .Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: this.purchaseunitList
-          })
-        },
-        onApprove: async (data, actions) => {
-          const order = await actions.order.capture();
-          this.paidFor = true;
-          console.log(order);
-        },
-        onError: err => {
-          console.log(err);
-        }
-      }).render(this.paypalElement.nativeElement);
-
-
     this.productoServicio.getProductos().subscribe(
       (productos: Producto[]) => {
         this.listaProductos = productos;
@@ -72,14 +52,30 @@ export class VentasComponent implements OnInit {
       });
   }
 
-  addToCart(i:number){
+  addToCart(i: number) {
     let producto = this.listaProductos.filter(prod => prod.codigoproducto == i)[0];
-    this.purchaseunit.description = producto.descripcionproducto;
+    this.precioAPagar = this.precioAPagar + producto.precioproducto;
+    /* Detalle de compra en PayPal */
+    this.purchaseunit.description = 'Compra desde GutyNatura';
     this.purchaseunit.amount.currency_code = 'USD';
-    this.purchaseunit.amount.value = producto.precioproducto;
-    this.purchaseunitList.push(this.purchaseunit);
+    this.purchaseunit.amount.value = this.precioAPagar;
+    this.purchaseunitList[0] = this.purchaseunit;
     this.variableGlobalServicio.purchaseunit = this.purchaseunitList;
-    console.log('MOSTRAMOS EL PRODUCTO');
+    /* ----- */
+
+    /* Detalle de compra para GutyNatura */
+    this.carritoDetalleObj.cantidad = 1;
+    this.carritoDetalleObj.producto = producto;
+    this.carritoDetalleList.push(this.carritoDetalleObj);
+    this.variableGlobalServicio.carritoCompraDetalle = this.carritoDetalleList;
+    /* ----- */
+
+    Swal.fire(
+      '',
+      'Agregaste el producto a tu carrito de compras',
+      'success'
+    )
+    console.log('MOSTRAMOS EL PRODUCTO EN GUTYNATURA');
     console.log(this.purchaseunitList);
   }
 
