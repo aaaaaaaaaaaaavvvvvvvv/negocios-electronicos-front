@@ -45,16 +45,25 @@ export class VentasComponent implements OnInit {
   listaProductos: Producto[] = [];
 
   ngOnInit() {
+    this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
+    console.log(this.purchaseunitList);
+   this.carritoDetalleList = this.variableGlobalServicio.carritoCompraDetalle;
     this.productoServicio.getProductos().subscribe(
       (productos: Producto[]) => {
         this.listaProductos = productos;
-        console.log(productos[0]);
+       
       });
   }
 
   addToCart(i: number) {
+    /* Capturar si es la primera vez que entra y la lista de compra esta vacía */
+    let precioGuardado = 0;
+    if(this.purchaseunitList[0] != undefined){
+      precioGuardado = this.purchaseunitList[0].amount.value;
+    }
+
     let producto = this.listaProductos.filter(prod => prod.codigoproducto == i)[0];
-    this.precioAPagar = this.precioAPagar + producto.precioproducto;
+    this.precioAPagar = this.precioAPagar + producto.precioproducto + precioGuardado;
     /* Detalle de compra en PayPal */
     this.purchaseunit.description = 'Compra desde GutyNatura';
     this.purchaseunit.amount.currency_code = 'USD';
@@ -71,12 +80,11 @@ export class VentasComponent implements OnInit {
     /* ----- */
 
     Swal.fire(
+      'Se agregó al carrito!',
       '',
-      'Agregaste el producto a tu carrito de compras',
       'success'
     )
-    console.log('MOSTRAMOS EL PRODUCTO EN GUTYNATURA');
-    console.log(this.purchaseunitList);
+  
   }
 
 

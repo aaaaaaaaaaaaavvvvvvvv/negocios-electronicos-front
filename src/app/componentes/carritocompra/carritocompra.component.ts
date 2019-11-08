@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PurchaseUnit } from 'src/app/entidades/purchaseUnits.model';
 import { VariableGlobalServicio } from 'src/app/servicios/variableGlobal.service';
+import { CarritoCompra } from 'src/app/entidades/carritocompra.model';
 
 declare var paypal;
 
@@ -27,14 +28,18 @@ export class CarritocompraComponent implements OnInit {
       value: 0
     }
   };
+  detalleCarrito: CarritoCompra[]=[];
+
+
   paidFor = false;
 
   constructor(private variableGlobalServicio: VariableGlobalServicio) { }
 
   ngOnInit() {
+    this.detalleCarrito = this.variableGlobalServicio.carritoCompraDetalle;
     this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
     console.log('Cargamos la lita general');
-    console.log(this.purchaseunitList);
+    console.log(this.detalleCarrito);
     paypal
       .Buttons({
         createOrder: (data, actions) => {
