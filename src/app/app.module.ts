@@ -10,6 +10,7 @@ import { ProductosServicios } from './servicios/productos.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CarritocompraComponent } from './componentes/carritocompra/carritocompra.component';
 import { VariableGlobalServicio } from './servicios/variableGlobal.service';
+import { LoginComponent } from './componentes/login/login.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { VariableGlobalServicio } from './servicios/variableGlobal.service';
     VentasComponent,
     HeaderComponent,
     FooterComponent,
-    CarritocompraComponent
+    CarritocompraComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
