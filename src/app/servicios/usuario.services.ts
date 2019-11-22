@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Producto } from '../entidades/producto.model';
 import { Observable } from 'rxjs';
 import { Usuario } from '../entidades/usuario.model';
+import { UserLogeado } from '../entidades/userLogeado.model';
 
 @Injectable()
 export class UsuariosServicios {
 
-    apiURL = 'https://negelec-gutynatura.herokuapp.com';
-
+    //apiURL = 'https://negelec-gutynatura.herokuapp.com';
+    apiURL = 'http://localhost:8099'
     constructor(private http: HttpClient) { }
 
     requestOptions: Object = {
@@ -22,8 +23,8 @@ export class UsuariosServicios {
         })
     }
 
-    login(usuario: Usuario): Observable<Usuario[]>{
-        return this.http.post<Usuario[]>(this.apiURL + '/email', usuario, this.requestOptions);
+    login(usuario: Usuario): Observable<UserLogeado>{
+        return this.http.post<UserLogeado>(this.apiURL + '/login', usuario, this.requestOptions);
     }
 
 }

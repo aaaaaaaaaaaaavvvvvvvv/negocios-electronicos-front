@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { VariableGlobalServicio } from 'src/app/servicios/variableGlobal.service';
+import { Usuario } from 'src/app/entidades/usuario.model';
+import { UserLogeado } from 'src/app/entidades/userLogeado.model';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,6 +20,12 @@ export class HeaderComponent implements OnInit {
 
   loggedIn : string = '';
   constructor(private variableGlobal: VariableGlobalServicio) { }
+  usuario: UserLogeado = {
+    codigousuario:0,
+    nombreusuario:'',
+    claveusuario: '',
+    roles: []
+  }
 
   ngOnInit() {
     this.loggedIn = this.variableGlobal.estaLogeado;
