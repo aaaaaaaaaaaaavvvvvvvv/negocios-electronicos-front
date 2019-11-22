@@ -39,7 +39,7 @@ export class VentasComponent implements OnInit {
   precioMaximo: number;
 
   constructor(private productoServicio: ProductosServicios,
-    private variableGlobalServicio: VariableGlobalServicio, ) { }
+    variableGlobalServicio: VariableGlobalServicio, ) { }
   listaProductosOriginal: Producto[] = [];
   listaProductos: Producto[] = [];
 
