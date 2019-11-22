@@ -28,8 +28,8 @@ export class CarritocompraComponent implements OnInit {
       value: 0
     }
   };
-  detalleCarrito: CarritoCompra[]=[];
-
+  detalleCarrito: CarritoCompra[] = [];
+  precioTotal: number = 0;
 
   paidFor = false;
 
@@ -40,6 +40,11 @@ export class CarritocompraComponent implements OnInit {
     this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
     console.log('Cargamos la lita general');
     console.log(this.detalleCarrito);
+    this.detalleCarrito.forEach((carritoCompra)=>{
+      this.precioTotal+=carritoCompra.producto.precioproducto*carritoCompra.cantidad;
+    });
+
+    
     paypal
       .Buttons({
         createOrder: (data, actions) => {

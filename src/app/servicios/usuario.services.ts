@@ -8,8 +8,8 @@ import { UserLogeado } from '../entidades/userLogeado.model';
 @Injectable()
 export class UsuariosServicios {
 
-    //apiURL = 'https://negelec-gutynatura.herokuapp.com';
-    apiURL = 'http://localhost:8099'
+    apiURL = 'https://negelec-gutynatura.herokuapp.com';
+    //apiURL = 'http://localhost:8099'
     constructor(private http: HttpClient) { }
 
     requestOptions: Object = {

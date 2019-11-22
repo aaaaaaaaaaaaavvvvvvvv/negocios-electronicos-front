@@ -10,13 +10,14 @@ import { UserLogeado } from '../entidades/userLogeado.model';
 @Injectable()
 export class VariableGlobalServicio {
 
-    purchaseunit: PurchaseUnit[]=[];
-    carritoCompraDetalle: CarritoCompra[]=[];
+    purchaseunit: PurchaseUnit[] = [];
+    carritoCompraDetalle: CarritoCompra[] = [];
     usuarioGlobal: UserLogeado = null;
     estaLogeado: string = 'N';
+    cantidadArticulos: number = 0;
 
-   constructor(){
+    constructor() {
 
-   }
+    }
 
 }
