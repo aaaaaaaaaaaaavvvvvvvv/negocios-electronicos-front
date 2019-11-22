@@ -19,7 +19,7 @@ import { UserLogeado } from 'src/app/entidades/userLogeado.model';
 export class HeaderComponent implements OnInit {
 
   loggedIn : string = '';
-  constructor(private variableGlobal: VariableGlobalServicio) { }
+  constructor(public variableGlobal: VariableGlobalServicio) { }
   usuario: UserLogeado = {
     codigousuario:0,
     nombreusuario:'',
