@@ -183,7 +183,7 @@
                                     <h6>{{producto.precioproducto}}</h6>
                                     <h6 class="l-through">{{producto.precioproducto}}</h6>
                                 </div>
-                                <div class="prd-bottom">
+                                <div class="prd-bottom" *ngIf="estaLogeado == 'S'">
 
                                     <a (click)="addToCart(i+1)" class="social-info">
                                         <span class="ti-bag"></span>

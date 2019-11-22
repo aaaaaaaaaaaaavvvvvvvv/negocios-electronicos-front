@@ -23,6 +23,7 @@ declare var paypal;
 })
 export class VentasComponent implements OnInit {
 
+  estaLogeado: string = 'N';
   precioAPagar: number = 0;
   purchaseunitList?: PurchaseUnit[] = [];
   purchaseunit?: PurchaseUnit = {
@@ -41,10 +42,11 @@ export class VentasComponent implements OnInit {
 
 
   constructor(private productoServicio: ProductosServicios,
-    private variableGlobalServicio: VariableGlobalServicio) { }
+    private variableGlobalServicio: VariableGlobalServicio,) { }
   listaProductos: Producto[] = [];
 
   ngOnInit() {
+    this.estaLogeado = this.variableGlobalServicio.estaLogeado;
     this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
     console.log(this.purchaseunitList);
    this.carritoDetalleList = this.variableGlobalServicio.carritoCompraDetalle;

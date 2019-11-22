@@ -4,12 +4,15 @@ import { Producto } from '../entidades/producto.model';
 import { Observable } from 'rxjs';
 import { PurchaseUnit } from '../entidades/purchaseUnits.model';
 import { CarritoCompra } from '../entidades/carritocompra.model';
+import { Usuario } from '../entidades/usuario.model';
 
 @Injectable()
 export class VariableGlobalServicio {
 
     purchaseunit: PurchaseUnit[]=[];
     carritoCompraDetalle: CarritoCompra[]=[];
+    usuarioGlobal: Usuario = null;
+    estaLogeado: string = 'N';
 
    constructor(){
 

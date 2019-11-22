@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Usuario } from 'src/app/entidades/usuario.model';
+import { UsuariosServicios } from 'src/app/servicios/usuario.services';
+import { FlashMessagesService } from 'angular2-flash-messages';
+import { Router } from '@angular/router';
+import { VariableGlobalServicio } from 'src/app/servicios/variableGlobal.service';
 
 @Component({
   selector: 'app-login',
@@ -7,22 +12,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  mensajeerror: String = '';
+  usuario: Usuario = {
+    usuario: '',
+    clave: ''
+  }
+
+  constructor(private loginService: UsuariosServicios,
+    private router: Router,
+    private flashMessages: FlashMessagesService,
+    private variableGlobal: VariableGlobalServicio) { }
 
   ngOnInit() {
   }
 
   login() {
-   /* this.loginService.login(this.email, this.password)
-      .then( res => {
-        this.router.navigate(['/']);
-      })
-      .catch(error =>{
-        this.mensajeerror='Las credenciales son incorrectas.';
-        this.flashMessages.show(error.message, {
-          cssClass: 'alert-danger', timeout: 4000
-        });
-      });*/
+    this.loginService.login(this.usuario).subscribe(
+      usuario => {
+        if (usuario == null || usuario == undefined) {
+          this.variableGlobal.usuarioGlobal = null;
+          this.variableGlobal.estaLogeado = 'S';
+        } else {
+          this.variableGlobal.usuarioGlobal = usuario[0];
+          this.variableGlobal.estaLogeado = 'N';
+        }
+      }
+    );
+
   }
 
 }

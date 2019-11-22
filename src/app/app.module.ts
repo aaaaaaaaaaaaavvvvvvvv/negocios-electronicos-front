@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CarritocompraComponent } from './componentes/carritocompra/carritocompra.component';
 import { VariableGlobalServicio } from './servicios/variableGlobal.service';
 import { LoginComponent } from './componentes/login/login.component';
+import { UsuariosServicios } from './servicios/usuario.services';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LoginComponent } from './componentes/login/login.component';
   ],
   providers: [
     ProductosServicios,
-    VariableGlobalServicio
+    VariableGlobalServicio,
+    UsuariosServicios
   ],
   bootstrap: [AppComponent]
 })
