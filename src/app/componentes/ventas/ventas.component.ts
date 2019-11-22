@@ -23,6 +23,7 @@ declare var paypal;
 })
 export class VentasComponent implements OnInit {
 
+  estaLogeado: string = 'S';
   precioAPagar: number = 0;
   purchaseunitList?: PurchaseUnit[] = [];
   purchaseunit?: PurchaseUnit = {
@@ -33,37 +34,29 @@ export class VentasComponent implements OnInit {
     }
   };
   carritoDetalleList: CarritoCompra[] = [];
-  carritoDetalleObj: CarritoCompra = {
-    producto: null,
-    cantidad: 0
-  };
 
-
+  precioMinimo: number;
+  precioMaximo: number;
 
   constructor(private productoServicio: ProductosServicios,
-    private variableGlobalServicio: VariableGlobalServicio) { }
+    private variableGlobalServicio: VariableGlobalServicio, ) { }
+  listaProductosOriginal: Producto[] = [];
   listaProductos: Producto[] = [];
 
   ngOnInit() {
+    //this.estaLogeado = this.variableGlobalServicio.estaLogeado;
     this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
     console.log(this.purchaseunitList);
-   this.carritoDetalleList = this.variableGlobalServicio.carritoCompraDetalle;
+    this.carritoDetalleList = this.variableGlobalServicio.carritoCompraDetalle;
     this.productoServicio.getProductos().subscribe(
       (productos: Producto[]) => {
+        this.listaProductosOriginal = productos;
         this.listaProductos = productos;
-       
+
       });
   }
 
-  addToCart(i: number) {
-    /* Capturar si es la primera vez que entra y la lista de compra esta vacía */
-    let precioGuardado = 0;
-    if(this.purchaseunitList[0] != undefined){
-      precioGuardado = this.purchaseunitList[0].amount.value;
-    }
-
-    let producto = this.listaProductos.filter(prod => prod.codigoproducto == i)[0];
-    this.precioAPagar = this.precioAPagar + producto.precioproducto + precioGuardado;
+  addToCart(producto: Producto) {
     /* Detalle de compra en PayPal */
     this.purchaseunit.description = 'Compra desde GutyNatura';
     this.purchaseunit.amount.currency_code = 'USD';
@@ -72,11 +65,32 @@ export class VentasComponent implements OnInit {
     this.variableGlobalServicio.purchaseunit = this.purchaseunitList;
     /* ----- */
 
+    /* Capturar si es la primera vez que entra y la lista de compra esta vacía */
+    let precioGuardado = 0;
+    if (this.purchaseunitList[0] != undefined) {
+      precioGuardado = this.purchaseunitList[0].amount.value;
+    }
+
+    //let producto = this.listaProductos.filter(prod => prod.codigoproducto == i)[0];
+    this.precioAPagar = this.precioAPagar + producto.precioproducto + precioGuardado;
+
     /* Detalle de compra para GutyNatura */
-    this.carritoDetalleObj.cantidad = 1;
-    this.carritoDetalleObj.producto = producto;
-    this.carritoDetalleList.push(this.carritoDetalleObj);
+    let carritoDetalleObj: CarritoCompra = {
+      producto: null,
+      cantidad: 0
+    };
+    carritoDetalleObj.cantidad = 1;
+    carritoDetalleObj.producto = producto;
+    let index = this.variableGlobalServicio.carritoCompraDetalle.findIndex((carritoCompra) => {
+      return carritoCompra.producto.codigoproducto === producto.codigoproducto;
+    });
+    if (index != -1) {
+      this.carritoDetalleList[index].cantidad++;
+    } else {
+      this.carritoDetalleList.push(carritoDetalleObj);
+    }
     this.variableGlobalServicio.carritoCompraDetalle = this.carritoDetalleList;
+    this.variableGlobalServicio.cantidadArticulos++;
     /* ----- */
 
     Swal.fire(
@@ -84,7 +98,20 @@ export class VentasComponent implements OnInit {
       '',
       'success'
     )
-  
+
+  }
+  filtrarPorPrecio() {
+    let precMin = this.precioMinimo;
+    let precMax = this.precioMaximo;
+    if (precMin == undefined)
+      precMin = 0;
+    if (precMax == undefined)
+      precMax = 9999999;
+
+    this.listaProductos = this.listaProductosOriginal.filter((producto) => {
+      return producto.precioproducto >= precMin
+        && producto.precioproducto <= precMax;
+    });
   }
 
 

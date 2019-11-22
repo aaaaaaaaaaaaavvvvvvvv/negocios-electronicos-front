@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VentasComponent } from './componentes/ventas/ventas.component';
@@ -10,6 +10,10 @@ import { ProductosServicios } from './servicios/productos.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CarritocompraComponent } from './componentes/carritocompra/carritocompra.component';
 import { VariableGlobalServicio } from './servicios/variableGlobal.service';
+import { LoginComponent } from './componentes/login/login.component';
+import { UsuariosServicios } from './servicios/usuario.services';
+import { FlashMessagesModule } from 'angular2-flash-messages';
+
 
 @NgModule({
   declarations: [
@@ -17,16 +21,20 @@ import { VariableGlobalServicio } from './servicios/variableGlobal.service';
     VentasComponent,
     HeaderComponent,
     FooterComponent,
-    CarritocompraComponent
+    CarritocompraComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FlashMessagesModule.forRoot(),
+    FormsModule
   ],
   providers: [
     ProductosServicios,
-    VariableGlobalServicio
+    VariableGlobalServicio,
+    UsuariosServicios
   ],
   bootstrap: [AppComponent]
 })
