@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     this.usuario.usuario = this.user;
     this.loginService.login(this.usuario).subscribe(
       usuario => {
-        console.log('Mostramos el resultado');
+        console.log('Usuario que regresa del servicio');
         console.log(usuario);
         if (usuario == null || usuario == undefined ) {
           this.mensajeerror='Las credenciales son incorrectas.';
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
         } else {
           
           this.variableGlobal.usuarioGlobal = usuario;
-          console.log('MAS RESULTADOS');
+          console.log('Usuario global');
           console.log(this.variableGlobal.usuarioGlobal.codigousuario);
           this.variableGlobal.estaLogeado = 'S';
           this.router.navigate(['/']);
