@@ -33,7 +33,7 @@ export class CarritocompraComponent implements OnInit {
 
   paidFor = false;
 
-  constructor(variableGlobalServicio: VariableGlobalServicio) { }
+  constructor(public variableGlobalServicio: VariableGlobalServicio) { }
 
   ngOnInit() {
     this.detalleCarrito = this.variableGlobalServicio.carritoCompraDetalle;
