@@ -13,6 +13,8 @@ import { VariableGlobalServicio } from './servicios/variableGlobal.service';
 import { LoginComponent } from './componentes/login/login.component';
 import { UsuariosServicios } from './servicios/usuario.services';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { CookieService } from 'ngx-cookie-service';
+import { HistorialComprasComponent } from './componentes/historial-compras/historial-compras.component';
 
 
 @NgModule({
@@ -22,7 +24,8 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     HeaderComponent,
     FooterComponent,
     CarritocompraComponent,
-    LoginComponent
+    LoginComponent,
+    HistorialComprasComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
   providers: [
     ProductosServicios,
     VariableGlobalServicio,
-    UsuariosServicios
+    UsuariosServicios,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

@@ -39,14 +39,15 @@ export class VentasComponent implements OnInit {
   precioMaximo: number;
 
   constructor(private productoServicio: ProductosServicios,
-    private variableGlobalServicio: VariableGlobalServicio, ) { }
+    public variableGlobalServicio: VariableGlobalServicio, ) { }
   listaProductosOriginal: Producto[] = [];
   listaProductos: Producto[] = [];
 
   ngOnInit() {
-    //this.estaLogeado = this.variableGlobalServicio.estaLogeado;
+    
+    this.estaLogeado = this.variableGlobalServicio.estaLogeado;
     this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
-    console.log(this.purchaseunitList);
+    console.log(this.estaLogeado);
     this.carritoDetalleList = this.variableGlobalServicio.carritoCompraDetalle;
     this.productoServicio.getProductos().subscribe(
       (productos: Producto[]) => {

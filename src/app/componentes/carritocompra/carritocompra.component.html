@@ -4,9 +4,6 @@
     <div class="row form-group">
         <div class="col-md-8">
             <div *ngIf="!paidFor">
-                <div class="row form-group">
-                    <h4><b>Lista de Productos</b></h4>
-                </div>
                 <div class="row form-group row-text">
                     <div class="col-md-3 label-text">
                         <p class="text-left">Nombre</p>
@@ -51,13 +48,13 @@
                     <div class="offset-md-8">
                     </div>
                     <div class="col-md-4 font-weight-bold">
-                            Precio Total: {{precioTotal}}
+                        Precio Total: {{precioTotal}}
                     </div>
                 </div>
 
             </div>
             <div *ngIf=paidFor>
-                <h1>Se complet&oacute;o la compra!</h1>
+                <h1>Compra Complet&oacute; la compra!</h1>
             </div>
         </div>
         <div class="col-md-4">

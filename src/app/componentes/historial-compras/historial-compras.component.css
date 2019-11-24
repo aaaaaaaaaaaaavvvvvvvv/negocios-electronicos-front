@@ -1,0 +1,29 @@
+.lista-producto{
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #E0DFE8;
+}
+
+.row-text{
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #9e9e9e;
+}
+    
+.perfil{
+    padding-left: 5%;
+    padding-right: 10%;
+ }
+    
+.label-text{
+    color: #9e9e9e;
+}
+    
+.box-text{
+    color: #000;
+}
+
+.margin-y-auto{
+    margin-top: auto;
+    margin-bottom: auto;
+}
