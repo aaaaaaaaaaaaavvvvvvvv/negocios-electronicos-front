@@ -77,11 +77,11 @@
                     <div class="head">Precio</div>
                     <div class="value-wrapper d-flex form-row">
                         <div id="lower-value" class="col-md-4">
-                            <input type="number" class="form-control" [(ngModel)]="precioMinimo" />
+                            <input type="number" class="form-control" [(ngModel)]="precioMinimo" placeholder="Min"/>
                         </div>
                         <div class="price col-md-1"> - </div>
                         <div id="lower-value" class="col-md-4">
-                            <input type="number" class="form-control" [(ngModel)]="precioMaximo" />
+                            <input type="number" class="form-control" [(ngModel)]="precioMaximo" placeholder="Max"/>
                         </div>
                         <div class="price col-md-2">
                             <button class="btn btn-success" (click)="filtrarPorPrecio()">
@@ -134,7 +134,7 @@
                                     <h6>{{producto.precioproducto}}</h6>
                                     <h6 class="l-through">{{producto.precioproducto*115/100 | number:'1.0-2'}}</h6>
                                 </div>
-                                <div class="prd-bottom" *ngIf="estaLogeado == 'S'">
+                                <div class="prd-bottom" *ngIf="this.variableGlobalServicio.estaLogeado == 'S'">
 
                                     <a (click)="addToCart(producto)" class="social-info">
                                         <span class="ti-bag"></span>

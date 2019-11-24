@@ -1,0 +1,54 @@
+<div class="offset-md-2 col-md-8 my-3 ">
+    <div class="widget">
+        <div *ngIf="compras!=undefined">
+
+
+        </div>
+        <div class="container mt-3 my-2 lista-producto" *ngFor="let compra of compras;">
+            <!--Foreach1-->
+            <div class="row font-weight-bold">
+                <div class="col-md-4">Fecha: {{compra.fechacompra | date:'yyyy/MM/dd hh:mm:ss aa'}}</div>
+                <div class="offset-md-5 col-md-3">
+                    Precio Total: {{compra.costoTotal | number:'1.0-2'}}
+                </div>
+            </div>
+            <!--Detalle-->
+            <div class="row form-group row-text">
+
+                <div class="offset-md-1 col-md-2 box-text">
+                    Unidades
+                </div>
+                <div class="col-md-2 box-text">
+                    Producto
+                </div>
+                <div class="col-md-5 box-text">
+                    Descripción
+                </div>
+                <div class="col-md-2 box-text">
+                    Precio Unit.
+                </div>
+            </div>
+            <div *ngFor="let detalle of compra.detalle">
+                <div class="row form-group row-text">
+                    <div class="col-md-1 label-text margin-y-auto">
+                        <img class="img-fluid" src="{{detalle.producto.urlfoto}}" alt="">
+                    </div>
+                    <div class="col-md-2 label-text margin-y-auto">
+                        {{detalle.cantidad}}
+                    </div>
+                    <div class="col-md-2 label-text margin-y-auto">
+                        {{detalle.producto.nombreproducto}}
+                    </div>
+                    <div class="col-md-5 label-text margin-y-auto">
+                        {{detalle.producto.descripcionproducto}}
+                    </div>
+                    <div class="col-md-2 label-text margin-y-auto">
+                        {{detalle.producto.precioproducto}}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

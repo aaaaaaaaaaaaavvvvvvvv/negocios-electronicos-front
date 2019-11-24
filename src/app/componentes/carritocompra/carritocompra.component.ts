@@ -2,7 +2,11 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PurchaseUnit } from 'src/app/entidades/purchaseUnits.model';
 import { VariableGlobalServicio } from 'src/app/servicios/variableGlobal.service';
 import { CarritoCompra } from 'src/app/entidades/carritocompra.model';
-
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { CompraPojo } from 'src/app/entidades/compraPojo.model';
+import { CompraDetalle } from 'src/app/entidades/compraDetallePojo.model';
+import { CompraService } from 'src/app/servicios/compra.service';
 declare var paypal;
 
 @Component({
@@ -33,34 +37,72 @@ export class CarritocompraComponent implements OnInit {
 
   paidFor = false;
 
-  constructor(public variableGlobalServicio: VariableGlobalServicio) { }
+  constructor(public variableGlobalServicio: VariableGlobalServicio,
+    private router: Router,
+    private compraService: CompraService) { }
 
   ngOnInit() {
     this.detalleCarrito = this.variableGlobalServicio.carritoCompraDetalle;
     this.purchaseunitList = this.variableGlobalServicio.purchaseunit;
     console.log('Cargamos la lita general');
     console.log(this.detalleCarrito);
-    this.detalleCarrito.forEach((carritoCompra)=>{
-      this.precioTotal+=carritoCompra.producto.precioproducto*carritoCompra.cantidad;
+    this.detalleCarrito.forEach((carritoCompra) => {
+      this.precioTotal += carritoCompra.producto.precioproducto * carritoCompra.cantidad;
     });
 
-    
+
     paypal
       .Buttons({
         createOrder: (data, actions) => {
           return actions.order.create({
-            purchase_units: this.purchaseunitList
+            purchase_units: [{
+              amount: {
+                value: this.precioTotal
+              }
+            }]
           })
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture();
           this.paidFor = true;
           console.log(order);
+          //Guardar en bd
+
+          let compraPojo: CompraPojo = {
+            codigousuario: this.variableGlobalServicio.usuarioGlobal.codigousuario,
+            detalleCarrito: []
+          };
+          this.detalleCarrito.forEach((carritoCompra) => {
+            let compraDetalle: CompraDetalle = {
+              cantidad: carritoCompra.cantidad,
+              codigoproducto: carritoCompra.producto.codigoproducto
+            }
+            compraPojo.detalleCarrito.push(compraDetalle);
+          });
+          this.compraService.comprar(compraPojo).subscribe((resultado) => {
+            if(resultado==true){
+              //Llamar a cloud message
+
+
+              this.variableGlobalServicio.carritoCompraDetalle = [];
+              this.variableGlobalServicio.cantidadArticulos = 0;
+              this.variableGlobalServicio.purchaseunit = undefined;
+              Swal.fire('Compra confirmada', 'Los productos pedidos serán enviados en la brevedad posible', 'success').then((resultado) => {
+                this.router.navigate(['/']);
+              })
+            }
+            else{
+              Swal.fire('Compra incompleta', 'Algo pasó en nuestros servidores, contacte a Guti para que le solucione el problema :s', 'error');
+            }
+            
+
+          });
         },
         onError: err => {
           console.log(err);
         }
       }).render(this.paypalElement.nativeElement);
   }
+  
 
 }

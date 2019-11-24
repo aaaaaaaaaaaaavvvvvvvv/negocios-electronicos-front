@@ -14,17 +14,17 @@ export class UsuariosServicios {
 
     requestOptions: Object = {
         /* other options here */
-        responseType: 'application/json'
+        responseType: 'application/json;charset=UTF-8'
     }
 
     httpOptions = {
         headers: new HttpHeaders({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json;charset=UTF-8'
         })
     }
 
     login(usuario: Usuario): Observable<UserLogeado>{
-        return this.http.post<UserLogeado>(this.apiURL + '/login', usuario, this.requestOptions);
+        return this.http.post<UserLogeado>(this.apiURL + '/login', usuario, this.httpOptions);
     }
 
 }
