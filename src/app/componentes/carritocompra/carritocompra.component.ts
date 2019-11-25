@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { CompraPojo } from 'src/app/entidades/compraPojo.model';
 import { CompraDetalle } from 'src/app/entidades/compraDetallePojo.model';
 import { CompraService } from 'src/app/servicios/compra.service';
+import { PushNotificacionService } from 'src/app/servicios/push-notificacion.service';
+import { PushNotificacion } from 'src/app/entidades/pushNotificacion.model';
 declare var paypal;
 
 @Component({
@@ -39,7 +41,8 @@ export class CarritocompraComponent implements OnInit {
 
   constructor(public variableGlobalServicio: VariableGlobalServicio,
     private router: Router,
-    private compraService: CompraService) { }
+    private compraService: CompraService,
+    private pushNotificacionService: PushNotificacionService) { }
 
   ngOnInit() {
     this.detalleCarrito = this.variableGlobalServicio.carritoCompraDetalle;
@@ -67,7 +70,6 @@ export class CarritocompraComponent implements OnInit {
           this.paidFor = true;
           console.log(order);
           //Guardar en bd
-
           let compraPojo: CompraPojo = {
             codigousuario: this.variableGlobalServicio.usuarioGlobal.codigousuario,
             detalleCarrito: []
@@ -80,22 +82,38 @@ export class CarritocompraComponent implements OnInit {
             compraPojo.detalleCarrito.push(compraDetalle);
           });
           this.compraService.comprar(compraPojo).subscribe((resultado) => {
-            if(resultado==true){
-              //Llamar a cloud message
+            if (resultado == true) {
+              if (this.variableGlobalServicio.usuarioGlobal.codigocelular != undefined) {
+                //Llamar a cloud message
+                let pushNotificacion: PushNotificacion = {
+                  codCelular: this.variableGlobalServicio.usuarioGlobal.codigocelular,
+                  usuario: this.variableGlobalServicio.usuarioGlobal.codigousuario
+                };
+                console.log(pushNotificacion);
+                this.pushNotificacionService.enviarNotificacion(pushNotificacion).subscribe((pushResponse) => {
+                  console.log(pushResponse);
+                  if (pushResponse.success == 1) {
+                    Swal.fire('Compra confirmada', 'Los productos pedidos serán enviados en la brevedad posible', 'success').then((resultado) => {
+                      this.router.navigate(['/']);
+                    })
+                  }
+                  else {
+                    Swal.fire('Dispositivo movil no encontrado', 'Algo pasó con su dispositivo movil asociado, contacte a Guti para que le solucione el problema :s. Si no tiene ninguno asociado, ignore este mensaje', 'error');
+                  }
+                  this.variableGlobalServicio.carritoCompraDetalle = [];
+                  this.variableGlobalServicio.cantidadArticulos = 0;
+                  this.variableGlobalServicio.purchaseunit = undefined;
 
+                });
+              }
+              else{
+                console.log('El usuario no ha registrado dispositivo movil');
+              } 
 
-              this.variableGlobalServicio.carritoCompraDetalle = [];
-              this.variableGlobalServicio.cantidadArticulos = 0;
-              this.variableGlobalServicio.purchaseunit = undefined;
-              Swal.fire('Compra confirmada', 'Los productos pedidos serán enviados en la brevedad posible', 'success').then((resultado) => {
-                this.router.navigate(['/']);
-              })
             }
-            else{
+            else {
               Swal.fire('Compra incompleta', 'Algo pasó en nuestros servidores, contacte a Guti para que le solucione el problema :s', 'error');
             }
-            
-
           });
         },
         onError: err => {
@@ -103,6 +121,6 @@ export class CarritocompraComponent implements OnInit {
         }
       }).render(this.paypalElement.nativeElement);
   }
-  
+
 
 }

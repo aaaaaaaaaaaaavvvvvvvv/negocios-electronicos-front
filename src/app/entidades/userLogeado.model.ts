@@ -5,4 +5,5 @@ export class UserLogeado{
     nombreusuario:string;
     claveusuario: string;
     saldo?: number;
+    codigocelular?: string;
 }
