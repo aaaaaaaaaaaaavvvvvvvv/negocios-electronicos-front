@@ -26,5 +26,8 @@ export class UsuariosServicios {
     login(usuario: Usuario): Observable<UserLogeado>{
         return this.http.post<UserLogeado>(this.apiURL + '/login', usuario, this.httpOptions);
     }
+    registro(usuario: Usuario): Observable<UserLogeado>{
+        return this.http.post<UserLogeado>(this.apiURL + '/registro', usuario, this.httpOptions);
+    }
 
 }
